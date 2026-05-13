@@ -16,6 +16,5 @@ public class OrderDocument {
     private String id = UUID.randomUUID().toString();
     private String orderId;
     private Double totalAmount;
-    private String currency;
     private String status;
 }

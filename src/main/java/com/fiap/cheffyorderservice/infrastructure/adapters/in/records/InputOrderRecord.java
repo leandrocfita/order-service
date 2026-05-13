@@ -10,14 +10,8 @@ public record InputOrderRecord(
         @NotNull
         UUID orderId,
 
-        @NotEmpty
-        String currency,
-
         @NotNull
         @Positive
-        Double totalAmount,
-
-        @NotEmpty
-        String status
+        Double totalAmount
 ) {
 }

@@ -4,6 +4,7 @@ import com.fiap.cheffyorderservice.application.ports.out.OrderRepositoryOutputPo
 import com.fiap.cheffyorderservice.domain.model.Order;
 import com.fiap.cheffyorderservice.infrastructure.adapters.out.persistence.document.OrderDocument;
 import com.fiap.cheffyorderservice.infrastructure.adapters.out.persistence.mapper.OrderPersistenceMapper;
+import com.fiap.cheffyorderservice.infrastructure.adapters.out.persistence.repository.OrderMongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
