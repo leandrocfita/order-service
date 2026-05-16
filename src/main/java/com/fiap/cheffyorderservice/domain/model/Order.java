@@ -9,7 +9,7 @@ public class Order {
     private final UUID id;
     private final UUID orderId;
     private final BigDecimal totalAmount;
-    private final PaymentStatus status;
+    private PaymentStatus status;
 
     private Order(
             UUID id,
@@ -25,7 +25,16 @@ public class Order {
 
     public static Order create(UUID orderId, BigDecimal totalAmount, PaymentStatus status) {
         return new Order(UUID.randomUUID(), orderId, totalAmount, status);
+    }
 
+    public static Order create(UUID orderId, BigDecimal totalAmount) {
+        return new Order(UUID.randomUUID(), orderId, totalAmount, PaymentStatus.PENDING);
+    }
+
+    public void updateStatus(PaymentStatus newStatus) {
+        if (newStatus != null) {
+            this.status = newStatus;
+        }
     }
 
     public UUID getId() {

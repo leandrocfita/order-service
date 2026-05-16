@@ -25,6 +25,13 @@ public class PlaceOrderService implements PlaceOrderInputPort {
     public PlaceOrderOutputRecord execute(PlaceOrderCommandRecord request) {
         log.info("PlaceOrderService.execute - START - orderId: [{}]", request.orderId());
 
+        Order order = Order.create(
+                request.orderId(),
+                request.totalAmount()
+        );
+
+        orderRepository.save(order);
+
         paymentOutputPort.requestPayment(new PaymentRequestRecord(
                 request.totalAmount().intValue(),
                 request.orderId().toString(),
@@ -33,13 +40,9 @@ public class PlaceOrderService implements PlaceOrderInputPort {
 
         PaymentStatusResponseRecord paymentStatus = paymentOutputPort.getPaymentStatus(request.orderId().toString());
 
-        Order order = Order.create(
-                request.orderId(),
-                request.totalAmount(),
-                paymentStatus.status()
-        );
+        order.updateStatus(paymentStatus.status());
 
-        orderRepository.save(order);
+        order = orderRepository.updateByOrderId(request.orderId().toString(), order);
 
         log.info("PlaceOrderService.execute - END - orderId: [{}], status: [{}]",
                 order.getOrderId(), order.getStatus()
