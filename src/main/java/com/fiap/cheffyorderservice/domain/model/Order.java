@@ -1,18 +1,21 @@
 package com.fiap.cheffyorderservice.domain.model;
 
+import com.fiap.cheffyorderservice.domain.enums.PaymentStatus;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Order {
     private final UUID id;
     private final UUID orderId;
-    private final Double totalAmount;
-    private final String status;
+    private final BigDecimal totalAmount;
+    private final PaymentStatus status;
 
     private Order(
             UUID id,
             UUID orderId,
-            Double totalAmount,
-            String status
+            BigDecimal totalAmount,
+            PaymentStatus status
     ) {
         this.id = id;
         this.orderId = orderId;
@@ -20,7 +23,7 @@ public class Order {
         this.status = status;
     }
 
-    public static Order create(UUID orderId, Double totalAmount, String status) {
+    public static Order create(UUID orderId, BigDecimal totalAmount, PaymentStatus status) {
         return new Order(UUID.randomUUID(), orderId, totalAmount, status);
 
     }
@@ -33,11 +36,11 @@ public class Order {
         return orderId;
     }
 
-    public Double getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 }
