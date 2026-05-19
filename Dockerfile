@@ -12,8 +12,8 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # --- 2. Etapa Final ---
-# Usa uma imagem JRE (Java Runtime Environment) muito menor para executar a aplicação
-FROM amazoncorretto:21-alpine-jre
+
+FROM amazoncorretto:21.0.3-alpine3.19
 
 # Expõe a porta que a aplicação Spring Boot usa
 EXPOSE 8083
