@@ -1,6 +1,6 @@
 # --- 1. Etapa de Build ---
 # Usa uma imagem com Maven ja instalado para compilar o projeto
-FROM maven:3.9.7-amazoncorretto-21-alpine as build
+FROM maven:3.9.9-amazoncorretto-21-alpine as build
 WORKDIR /app
 
 COPY pom.xml .
