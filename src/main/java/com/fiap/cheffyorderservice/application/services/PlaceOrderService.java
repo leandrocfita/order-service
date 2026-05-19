@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -30,7 +32,17 @@ public class PlaceOrderService implements PlaceOrderInputPort {
                 request.totalAmount()
         );
 
-        orderRepository.save(order);
+        Optional<Order> orderOptional = orderRepository.findByOrderId(request.orderId().toString());
+
+        if (orderOptional.isPresent()) {
+            log.warn("PlaceOrderService.execute - Order with orderId [{}] already exists. Skipping creation.",
+                    request.orderId()
+            );
+
+            order = orderOptional.get();
+        } else {
+            orderRepository.save(order);
+        }
 
         paymentOutputPort.requestPayment(new PaymentRequestRecord(
                 request.totalAmount().intValue(),

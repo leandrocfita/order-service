@@ -1,5 +1,6 @@
 package com.fiap.cheffyorderservice.infrastructure.adapters.in.controllers.exception;
 
+import com.fiap.cheffyorderservice.domain.exception.OrderNotFoundException;
 import com.fiap.cheffyorderservice.domain.exception.PaymentServiceException;
 import com.fiap.cheffyorderservice.domain.exception.PaymentTimeoutException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(status).body(
                 new ErrorResponse("PAYMENT_ERROR", e.getMessage(), e.getHttpStatus())
+        );
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleOrderNotFound(OrderNotFoundException e) {
+        log.warn("GlobalExceptionHandler.handleOrderNotFound - WARN - OrderNotFoundException captured: [{}]",
+                e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                new ErrorResponse("ORDER_NOT_FOUND", e.getMessage(), HttpStatus.NOT_FOUND.value())
         );
     }
 
