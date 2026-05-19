@@ -1,0 +1,13 @@
+.dockerignore
+.git
+.gitignore
+.project
+.settings
+.classpath
+target
+pom.xml
+README.md
+mvnw
+mvnw.cmd
+.mvn
+.github
