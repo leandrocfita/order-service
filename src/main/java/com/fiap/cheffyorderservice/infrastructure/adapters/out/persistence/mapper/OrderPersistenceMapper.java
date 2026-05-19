@@ -17,7 +17,6 @@ public interface OrderPersistenceMapper {
         return Order.create(
                 UUID.fromString(document.getOrderId()),
                 document.getTotalAmount(),
-                document.getCurrency(),
                 document.getStatus()
         );
     }

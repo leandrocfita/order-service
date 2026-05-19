@@ -1,9 +1,8 @@
 package com.fiap.cheffyorderservice.application.ports.in;
 
 import com.fiap.cheffyorderservice.application.ports.in.records.PlaceOrderCommandRecord;
-
-import java.util.UUID;
+import com.fiap.cheffyorderservice.application.ports.out.records.PlaceOrderOutputRecord;
 
 public interface PlaceOrderInputPort {
-    UUID execute(PlaceOrderCommandRecord request);
+    PlaceOrderOutputRecord execute(PlaceOrderCommandRecord request);
 }

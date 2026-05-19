@@ -1,5 +1,6 @@
 package com.fiap.cheffyorderservice.infrastructure.adapters.in.records;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -10,14 +11,8 @@ public record InputOrderRecord(
         @NotNull
         UUID orderId,
 
-        @NotEmpty
-        String currency,
-
         @NotNull
         @Positive
-        Double totalAmount,
-
-        @NotEmpty
-        String status
+        BigDecimal totalAmount
 ) {
 }

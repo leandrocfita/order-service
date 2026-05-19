@@ -1,10 +1,12 @@
 package com.fiap.cheffyorderservice.infrastructure.adapters.out.persistence.document;
 
+import com.fiap.cheffyorderservice.domain.enums.PaymentStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 
@@ -15,7 +17,6 @@ public class OrderDocument {
     @Id
     private String id = UUID.randomUUID().toString();
     private String orderId;
-    private Double totalAmount;
-    private String currency;
-    private String status;
+    private BigDecimal totalAmount;
+    private PaymentStatus status;
 }
