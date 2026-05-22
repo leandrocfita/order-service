@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PaymentStatus {
     PAID("pago"),
-    ACCEPTED("accepted"),
-    PENDING("pendente");
+    SENT_TO_PAYMENT_GATEWAY("enviado"),
+    PENDING("pendente"),
+    CANCELED("canceled");
 
     private final String status;
 
