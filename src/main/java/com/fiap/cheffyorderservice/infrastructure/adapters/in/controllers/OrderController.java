@@ -35,7 +35,7 @@ public class OrderController {
     public ResponseEntity<OrderStatusOutputRecord> getOrderStatus(@RequestParam UUID orderId) {
         log.info("HTTP request received to get order status [orderId={}]", orderId);
         var response = orderStatusInputPort.checkOrderStatus(orderId);
-        log.info("Order status successfully [orderId={}, paymentStatus={}]", response.orderId(), response.status());
+        log.info("Order status retrieved successfully [orderId={}, paymentStatus={}]", response.orderId(), response.status());
         return ResponseEntity.ok().body(response);
     }
 }
