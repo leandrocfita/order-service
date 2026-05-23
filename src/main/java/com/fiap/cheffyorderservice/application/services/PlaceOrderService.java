@@ -45,12 +45,13 @@ public class PlaceOrderService implements PlaceOrderInputPort {
 
             order = orderOptional.get();
         } else {
+            log.info("Creating new order record [orderId={}]", request.orderId());
             orderRepository.save(order);
         }
 
         if(order.getStatus() != PaymentStatus.PENDING){
             log.info(
-                    "Pedido [{}] já processado com status [{}]",
+                    "Order [{}] already processed with status [{}] - Skipping payment request.",
                     order.getOrderId(),
                     order.getStatus()
             );
@@ -58,6 +59,7 @@ public class PlaceOrderService implements PlaceOrderInputPort {
             return placeOrderMapper.toPlaceOrderOutput(order);
         }
 
+        log.info("Requesting payment for order [orderId={}, amount={}]", request.orderId(), request.totalAmount());
         paymentOutputPort.requestPayment(new PaymentRequestRecord(
                 request.totalAmount().intValue(),
                 request.orderId().toString(),
@@ -68,6 +70,7 @@ public class PlaceOrderService implements PlaceOrderInputPort {
         order = orderRepository.updateByOrderId(request.orderId().toString(), order);
 
         PaymentStatusResponseRecord paymentStatus = paymentOutputPort.getPaymentStatus(request.orderId().toString());
+        log.info("Payment status received [orderId={}, status={}]", request.orderId(), paymentStatus.status());
 
         order.updateStatus(paymentStatus.status());
         order = orderRepository.updateByOrderId(request.orderId().toString(), order);
