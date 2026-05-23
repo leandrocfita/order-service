@@ -6,7 +6,7 @@ public enum PaymentStatus {
     PAID("pago"),
     SENT_TO_PAYMENT_GATEWAY("enviado"),
     PENDING("pendente"),
-    CANCELED("canceled");
+    CANCELED("cancelado");
 
     private final String status;
 
