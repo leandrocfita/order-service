@@ -29,7 +29,7 @@ public class OrderStatusService implements OrderStatusInputPort {
         Order order = orderRepository.findByOrderId(orderIdString).orElse(null);
 
         if (order == null) {
-            log.warn("Order not found while checking status [orderId={}]", orderId);
+            log.error("Order not found while checking status [orderId={}]", orderId);
             throw new OrderNotFoundException("Order not found: " + orderId);
         }
 
