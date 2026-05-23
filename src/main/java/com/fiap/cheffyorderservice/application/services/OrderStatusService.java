@@ -26,10 +26,10 @@ public class OrderStatusService implements OrderStatusInputPort {
     @Override
     public OrderStatusOutputRecord checkOrderStatus(UUID orderId) {
         String orderIdString = orderId.toString();
-
         Order order = orderRepository.findByOrderId(orderIdString).orElse(null);
 
         if (order == null) {
+            log.error("Order not found while checking status [orderId={}]", orderId);
             throw new OrderNotFoundException("Order not found: " + orderId);
         }
 

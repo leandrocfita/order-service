@@ -25,8 +25,6 @@ public class PlaceOrderService implements PlaceOrderInputPort {
 
     @Override
     public PlaceOrderOutputRecord execute(PlaceOrderCommandRecord request) {
-        log.info("PlaceOrderService.execute - START - orderId: [{}]", request.orderId());
-
         Order order = Order.create(
                 request.orderId(),
                 request.totalAmount()
@@ -35,14 +33,14 @@ public class PlaceOrderService implements PlaceOrderInputPort {
         Optional<Order> orderOptional = orderRepository.findByOrderId(request.orderId().toString());
 
         if (orderOptional.isPresent()) {
-            log.warn("PlaceOrderService.execute - Order with orderId [{}] already exists. Skipping creation.",
-                    request.orderId()
-            );
-
+            log.warn("Order already exists, using existing record instead of creating a new one [orderId={}]", request.orderId());
             order = orderOptional.get();
         } else {
+            log.info("Creating new order record [orderId={}]", request.orderId());
             orderRepository.save(order);
         }
+
+        log.info("Requesting payment for order [orderId={}, amount={}]", request.orderId(), request.totalAmount());
 
         paymentOutputPort.requestPayment(new PaymentRequestRecord(
                 request.totalAmount().intValue(),
@@ -51,15 +49,9 @@ public class PlaceOrderService implements PlaceOrderInputPort {
         ));
 
         PaymentStatusResponseRecord paymentStatus = paymentOutputPort.getPaymentStatus(request.orderId().toString());
-
+        log.info("Payment status received [orderId={}, status={}]", request.orderId(), paymentStatus.status());
         order.updateStatus(paymentStatus.status());
-
         order = orderRepository.updateByOrderId(request.orderId().toString(), order);
-
-        log.info("PlaceOrderService.execute - END - orderId: [{}], status: [{}]",
-                order.getOrderId(), order.getStatus()
-        );
-
         return placeOrderMapper.toPlaceOrderOutput(order);
     }
 }
