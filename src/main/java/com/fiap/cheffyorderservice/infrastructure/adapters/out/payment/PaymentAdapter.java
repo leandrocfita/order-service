@@ -23,32 +23,27 @@ public class PaymentAdapter implements PaymentOutputPort {
     @Override
     public void requestPayment(PaymentRequestRecord request) {
         try {
-            log.info("PaymentAdapter.requestPayment - START - Requesting payment for orderId: [{}], amount: [{}]",
+            log.info("HTTP request sent to payment API to request orderId [orderId={}, amount={}]",
                     request.paymentId(), request.value()
             );
-
             paymentClient.requestPayment(request);
-
-            log.info("PaymentAdapter.requestPayment - END - Payment successful - orderId: [{}]", request.paymentId());
+            log.info("Payment request completed successfully [orderId={}]", request.paymentId());
         } catch (FeignException e) {
             if (e.status() == HttpStatus.REQUEST_TIMEOUT.value()) {
-                log.error("PaymentAdapter.requestPayment - ERROR - Timeout on communication with payment API - orderId: [{}]",
-                        request.paymentId(), e
+                log.error("Timeout while communicating with payment API [orderId={}, statusCode={}, message={}]",
+                        request.paymentId(), e.status(), e.getMessage(), e
                 );
-
                 throw new PaymentTimeoutException("Timeout when communicating with external payment API", e);
             }
 
-            log.error("PaymentAdapter.requestPayment - ERROR - Error on payment API - orderId: [{}]",
-                    request.paymentId(), e
+            log.error("Payment API returned an error while requesting payment [orderId={}, statusCode={}, message={}]",
+                    request.paymentId(), e.status(), e.getMessage(), e
             );
-
             throw new PaymentServiceException("Error while processing payment", e.status(), e);
         } catch (Exception e) {
-            log.error("PaymentAdapter.requestPayment - ERROR - Unexpected error - orderId: [{}]",
-                    request.paymentId(), e
+            log.error("Unexpected error while requesting payment [orderId={}, message={}]",
+                    request.paymentId(), e.getMessage(), e
             );
-
             throw new RuntimeException("Unexpected error when requesting payment", e);
         }
     }
@@ -56,25 +51,20 @@ public class PaymentAdapter implements PaymentOutputPort {
     @Override
     public PaymentStatusResponseRecord getPaymentStatus(String paymentId) {
         try {
-            log.info("PaymentAdapter.getPaymentStatus - START - Checking payment status - orderId: [{}]", paymentId);
-
+            log.info("HTTP request sent to payment API to check payment status [orderId={}]", paymentId);
             ResponseEntity<PaymentStatusResponseRecord> response = paymentClient.getPaymentStatus(paymentId);
-
-            log.info("PaymentAdapter.getPaymentStatus - END - Payment status retrieved successfully - orderId: [{}]", paymentId);
+            log.info("Payment status retrieved successfully [orderId={}]", paymentId);
             return response.getBody();
         } catch (FeignException e) {
             if (e.status() == HttpStatus.REQUEST_TIMEOUT.value()) {
-                log.error("PaymentAdapter.getPaymentStatus - ERROR - Timeout on communication with payment API - orderId: [{}]",
-                        paymentId, e
+                log.error("Timeout while communicating with payment API [orderId={}, statusCode={}, message={}]",
+                        paymentId, e.status(), e.getMessage(), e
                 );
-
                 throw new PaymentTimeoutException("Timeout when communicating with external payment API", e);
             }
-
-            log.error("PaymentAdapter.getPaymentStatus - ERROR - Error on payment API - orderId: [{}]",
-                    paymentId, e
+            log.error("Payment API returned an error while checking payment status [paymentId={}, statusCode={}, message={}]",
+                    paymentId, e.status(), e.getMessage(), e
             );
-
             throw new PaymentServiceException("Error while checking payment status", e.status(), e);
         }
     }

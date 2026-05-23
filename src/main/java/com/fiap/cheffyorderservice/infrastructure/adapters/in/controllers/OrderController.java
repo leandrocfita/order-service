@@ -25,23 +25,17 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<PlaceOrderOutputRecord> placeOrder(@RequestBody @Valid InputOrderRecord request) {
-        log.info("OrderController.placeOrder - START - Place order: [{}]", request.orderId());
-
+        log.info("HTTP request received to place order [orderId={}, totalAmount={}]", request.orderId(), request.totalAmount());
         var response = placeOrderInputPort.execute(inputOrderMapper.toCommand(request));
-
-        log.info("OrderController.placeOrder - END - Order placed successfully");
-
+        log.info("Order placed successfully [orderId={}]", response.orderId());
         return ResponseEntity.ok().body(response);
     }
 
     @GetMapping
     public ResponseEntity<OrderStatusOutputRecord> getOrderStatus(@RequestParam UUID orderId) {
-        log.info("OrderController.getOrderStatus - START - Get order status for orderId: [{}]", orderId);
-
+        log.info("HTTP request received to get order status [orderId={}]", orderId);
         var response = orderStatusInputPort.checkOrderStatus(orderId);
-
-        log.info("OrderController.getOrderStatus - END - Order status retrieved successfully");
-
+        log.info("Order status successfully [orderId={}, paymentStatus={}]", response.orderId(), response.status());
         return ResponseEntity.ok().body(response);
     }
 }

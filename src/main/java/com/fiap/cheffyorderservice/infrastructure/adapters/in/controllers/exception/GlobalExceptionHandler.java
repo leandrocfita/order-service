@@ -15,10 +15,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PaymentTimeoutException.class)
     public ResponseEntity<ErrorResponse> handlePaymentTimeout(PaymentTimeoutException e) {
-        log.warn("GlobalExceptionHandler.handlePaymentTimeout - WARN - PaymentTimeoutException captured: [{}]",
-                e.getMessage()
-        );
-
+        log.warn("Payment timeout while processing order request [message={}]", e.getMessage());
         return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT).body(
                 new ErrorResponse("PAYMENT_TIMEOUT", e.getMessage(), HttpStatus.REQUEST_TIMEOUT.value())
         );
@@ -26,10 +23,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(PaymentServiceException.class)
     public ResponseEntity<ErrorResponse> handlePaymentService(PaymentServiceException e) {
-        log.warn("GlobalExceptionHandler.handlePaymentService - WARN - PaymentServiceException captured: [{}] - HTTP Status: [{}]",
-                e.getMessage(), e.getHttpStatus()
-        );
-
+        log.warn("Payment service error while processing order request [message={}, httpStatus={}]", e.getMessage(), e.getHttpStatus());
         HttpStatus status = HttpStatus.resolve(e.getHttpStatus());
 
         if (status == null) {
@@ -43,14 +37,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(OrderNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleOrderNotFound(OrderNotFoundException e) {
-        log.warn("GlobalExceptionHandler.handleOrderNotFound - WARN - OrderNotFoundException captured: [{}]",
-                e.getMessage()
-        );
-
+        log.warn("Order not found while retrieving order status [message={}]", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ErrorResponse("ORDER_NOT_FOUND", e.getMessage(), HttpStatus.NOT_FOUND.value())
         );
     }
 
-    record ErrorResponse(String code, String message, int status) {}
+    record ErrorResponse(String code, String message, int status) {
+    }
 }
