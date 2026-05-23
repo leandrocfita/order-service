@@ -25,8 +25,10 @@ public class PlaceOrderConsumer {
             )
     )
     @KafkaListener(
-            topics = "order-service-topic",
-            groupId = "order-service-group")
+            topics = "order.created",
+            groupId = "order.created-group",
+            containerFactory = "jsonKafkaListenerContainerFactory"
+    )
     public void consume(InputOrderRecord message) {
 
         log.info("Received message: {}", message);

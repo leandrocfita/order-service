@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class OrderEventProducer implements OrderStatusChangeOutputPort {
 
-    private final KafkaTemplate<String, OrderStatusOutputRecord> kafkaTemplate;
-    private static final String ORDER_STATUS_CHANGE_TOPIC = "order.status-change-topic";
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private static final String ORDER_STATUS_CHANGE_TOPIC = "order.status-change";
 
     @Override
     public void publishStatusChangeEvent(OrderStatusOutputRecord orderStatusOutputRecord) {

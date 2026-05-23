@@ -1,6 +1,8 @@
 package com.fiap.cheffyorderservice.infrastructure.adapters.in.consumer;
 
 import com.fiap.cheffyorderservice.application.ports.in.CancelOrderInputPort;
+import com.fiap.cheffyorderservice.application.ports.in.records.PlaceOrderCommandRecord;
+import com.fiap.cheffyorderservice.infrastructure.adapters.in.records.InputOrderRecord;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -13,10 +15,12 @@ public class PlaceOrderDLTConsumer {
     private final CancelOrderInputPort cancelOrderInputPort;
 
     @KafkaListener(
-            topics = "order-service-topic-dlt",
-            groupId = "order-service-dlt-group"
+            topics = "order.created-dlt",
+            groupId = "order.created-dlt-group",
+            containerFactory = "jsonKafkaListenerContainerFactory"
     )
-    public void consumeDlt(String orderId) {
+    public void consumeDlt(InputOrderRecord order) {
+        String orderId = order.orderId().toString();
 
         log.info("Cancelando pedido com id: {}", orderId);
 

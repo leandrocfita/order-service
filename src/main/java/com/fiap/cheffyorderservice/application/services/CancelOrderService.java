@@ -31,7 +31,7 @@ public class CancelOrderService implements CancelOrderInputPort {
 
         if (order.isEmpty()) {
             log.error("Order not found with id: {}", orderId);
-            throw new OrderNotFoundException("Pedido não encontrado para o id: " + orderId);
+            return;
         }
         Order recoveredOrder = order.get();
 
