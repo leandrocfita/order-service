@@ -40,8 +40,6 @@ public class CancelOrderService implements CancelOrderInputPort {
             return;
         }
 
-        //TODO: verificar se o pedido ainda está com o status PENDING e reenviar para o fluxo de criação de pedidos?
-
         recoveredOrder.updateStatus(PaymentStatus.CANCELED);
 
         orderRepository.updateByOrderId(orderId, recoveredOrder);

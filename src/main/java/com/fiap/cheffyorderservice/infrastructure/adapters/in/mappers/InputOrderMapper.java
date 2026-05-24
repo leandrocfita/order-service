@@ -1,6 +1,8 @@
 package com.fiap.cheffyorderservice.infrastructure.adapters.in.mappers;
 
 import com.fiap.cheffyorderservice.application.ports.in.records.PlaceOrderCommandRecord;
+import com.fiap.cheffyorderservice.application.ports.in.records.ReprocessOrderCommandRecord;
+import com.fiap.cheffyorderservice.application.ports.out.records.ReprocessOrderOutputRecord;
 import com.fiap.cheffyorderservice.infrastructure.adapters.in.records.InputOrderRecord;
 import org.mapstruct.Mapper;
 
@@ -8,4 +10,6 @@ import org.mapstruct.Mapper;
 public interface InputOrderMapper {
 
     PlaceOrderCommandRecord toCommand(InputOrderRecord input);
+
+    PlaceOrderCommandRecord fromReprocessOrder(ReprocessOrderOutputRecord input);
 }

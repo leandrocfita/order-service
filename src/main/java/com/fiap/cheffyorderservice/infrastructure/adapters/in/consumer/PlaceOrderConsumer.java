@@ -6,8 +6,6 @@ import com.fiap.cheffyorderservice.infrastructure.adapters.in.records.InputOrder
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.annotation.RetryableTopic;
-import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -18,16 +16,10 @@ public class PlaceOrderConsumer {
     private final PlaceOrderInputPort placeOrderInputPort;
     private final InputOrderMapper inputOrderMapper;
 
-    @RetryableTopic(
-            backoff = @Backoff(
-                    delay = 5000,
-                    multiplier = 2.0
-            )
-    )
     @KafkaListener(
             topics = "order.created",
             groupId = "order.created-group",
-            containerFactory = "jsonKafkaListenerContainerFactory"
+            containerFactory = "placeOrderListenerContainerFactory"
     )
     public void consume(InputOrderRecord message) {
 

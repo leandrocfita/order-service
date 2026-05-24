@@ -35,9 +35,11 @@ public class OrderRepositoryAdapter implements OrderRepositoryOutputPort {
             OrderDocument document = existingDocument.get();
             document.setTotalAmount(order.getTotalAmount());
             document.setStatus(order.getStatus());
+            document.setProcessingAttempts(order.getProcessingAttempts());
 
             OrderDocument updatedDocument = mongoRepository.save(document);
-            return mapper.toDomain(updatedDocument);
+            Order domain = mapper.toDomain(updatedDocument);
+            return domain;
         }
 
         throw new IllegalArgumentException("Order with orderId " + orderId + " not found");

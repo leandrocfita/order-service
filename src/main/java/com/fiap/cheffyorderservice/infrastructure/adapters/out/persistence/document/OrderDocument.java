@@ -15,8 +15,8 @@ import java.util.UUID;
 @Document(collection = "orders")
 public class OrderDocument {
     @Id
-    private String id = UUID.randomUUID().toString();
     private String orderId;
     private BigDecimal totalAmount;
     private PaymentStatus status;
+    private int processingAttempts;
 }

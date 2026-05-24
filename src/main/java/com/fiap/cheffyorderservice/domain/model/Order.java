@@ -1,34 +1,35 @@
 package com.fiap.cheffyorderservice.domain.model;
 
 import com.fiap.cheffyorderservice.domain.enums.PaymentStatus;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Order {
-    private final UUID id;
     private final UUID orderId;
     private final BigDecimal totalAmount;
     private PaymentStatus status;
+    private int processingAttempts;
 
     private Order(
-            UUID id,
             UUID orderId,
             BigDecimal totalAmount,
-            PaymentStatus status
+            PaymentStatus status,
+            int processingAttempts
     ) {
-        this.id = id;
         this.orderId = orderId;
         this.totalAmount = totalAmount;
         this.status = status;
+        this.processingAttempts = processingAttempts;
     }
 
-    public static Order create(UUID orderId, BigDecimal totalAmount, PaymentStatus status) {
-        return new Order(UUID.randomUUID(), orderId, totalAmount, status);
+    public static Order restore(UUID orderId, BigDecimal totalAmount, PaymentStatus status, int processingAttempts) {
+        return new Order(orderId, totalAmount, status, processingAttempts);
     }
 
     public static Order create(UUID orderId, BigDecimal totalAmount) {
-        return new Order(UUID.randomUUID(), orderId, totalAmount, PaymentStatus.PENDING);
+        return new Order(orderId, totalAmount, PaymentStatus.CREATED, 1);
     }
 
     public void updateStatus(PaymentStatus newStatus) {
@@ -37,8 +38,12 @@ public class Order {
         }
     }
 
-    public UUID getId() {
-        return id;
+    public void incrementProcessingAttempts() {
+        this.processingAttempts = this.processingAttempts + 1;
+    }
+
+    public int getProcessingAttempts() {
+        return this.processingAttempts;
     }
 
     public UUID getOrderId() {

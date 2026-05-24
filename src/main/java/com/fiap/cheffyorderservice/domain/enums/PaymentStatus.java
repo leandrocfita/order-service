@@ -3,6 +3,7 @@ package com.fiap.cheffyorderservice.domain.enums;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PaymentStatus {
+    CREATED("criado"),
     PAID("pago"),
     SENT_TO_PAYMENT_GATEWAY("enviado"),
     PENDING("pendente"),
