@@ -10,14 +10,16 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface OrderPersistenceMapper {
     OrderDocument toDocument(Order order);
+
     Order toDomain(OrderDocument document);
 
     @ObjectFactory
     default Order createOrder(OrderDocument document) {
-        return Order.create(
+        return Order.restore(
                 UUID.fromString(document.getOrderId()),
                 document.getTotalAmount(),
-                document.getStatus()
+                document.getStatus(),
+                document.getProcessingAttempts()
         );
     }
 }
