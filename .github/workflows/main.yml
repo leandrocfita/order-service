@@ -83,10 +83,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v4
+      - name: Build and push Multi-Arch Image
+        uses: docker/build-push-action@v5
         with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-service:latest
-          platforms: linux/amd64, linux/arm64
+            context: .
+            file: ./Dockerfile
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/order-service:latest
+            platforms: linux/amd64,linux/arm64
+
