@@ -1,0 +1,12 @@
+.dockerignore
+.git
+.gitignore
+.project
+.settings
+.classpath
+target
+README.md
+mvnw
+mvnw.cmd
+.mvn
+.github
