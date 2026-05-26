@@ -1,8 +1,9 @@
 package com.fiap.cheffyorderservice.application.ports.out.records;
 
-import com.fiap.cheffyorderservice.domain.enums.PaymentStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record PaymentResponseRecord(
-        PaymentStatus status
+        @JsonProperty("status")
+        String status
 ) {
 }
