@@ -18,7 +18,7 @@ public class ReprocessOrderConsumer {
     private final PlaceOrderInputPort placeOrderInputPort;
     private final InputOrderMapper inputOrderMapper;
 
-    private final int MAX_ATTEMPTS = 3;
+    private final int MAX_ATTEMPTS = 2;
 
     @KafkaListener(
             topics = "order.pending-payment",
