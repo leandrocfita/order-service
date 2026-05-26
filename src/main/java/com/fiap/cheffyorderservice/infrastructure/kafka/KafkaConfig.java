@@ -60,7 +60,7 @@ public class KafkaConfig {
                 new JsonDeserializer<>(InputOrderRecord.class);
 
         deserializer.addTrustedPackages("*");
-        deserializer.setRemoveTypeHeaders(false);
+        deserializer.setUseTypeHeaders(false);
 
         return new DefaultKafkaConsumerFactory<>(
                 props,
